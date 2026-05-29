@@ -71,14 +71,16 @@ function App() {
     <MotionConfig reducedMotion={shouldReduceMotion ? "always" : "never"}>
       <div className="app-shell">
         <GridBackdrop />
-        <FallingPattern
-          className="global-falling-pattern"
-          color="rgba(255, 255, 255, 0.38)"
-          backgroundColor="#030303"
-          duration={128}
-          blurIntensity="0.84em"
-          density={1.08}
-        />
+        {shouldReduceMotion ? null : (
+          <FallingPattern
+            className="global-falling-pattern"
+            color="rgba(255, 255, 255, 0.38)"
+            backgroundColor="#030303"
+            duration={128}
+            blurIntensity="0.84em"
+            density={1.08}
+          />
+        )}
         <TopBar
           content={content}
           language={language}
@@ -140,6 +142,7 @@ function TopBar({
               className={option === language ? "is-active" : undefined}
               onClick={() => onLanguageChange(option)}
               type="button"
+              aria-label={`Switch language to ${option === "en" ? "English" : "Spanish"}`}
               aria-pressed={option === language}
             >
               {option.toUpperCase()}
@@ -162,6 +165,8 @@ function HeroSection({
   activeNodeId: string;
   onNodeSelect: (nodeId: string) => void;
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="hero-grid section-panel" id="work" aria-labelledby="hero-title">
       <div className="hero-copy">
@@ -174,7 +179,7 @@ function HeroSection({
             colorBack="#030303"
             colorFront="#f5f5f5"
             pxSize={4}
-            speed={0.18}
+            speed={shouldReduceMotion ? 0 : 0.18}
             className="hero-title-shader-canvas"
           />
         </div>
@@ -327,6 +332,8 @@ function SystemGraph({
               className={`system-node status-${node.status} ${isActive ? "is-active" : ""}`}
               style={{ left: `${node.x}%`, top: `${node.y}%` }}
               onClick={() => onNodeSelect(node.id)}
+              type="button"
+              aria-label={`Open ${node.label} details`}
               aria-pressed={isActive}
             >
               <Icon size={22} aria-hidden="true" />
@@ -412,9 +419,10 @@ function ProjectSection({
               className="project-link"
               href={project.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               role="cell"
               data-label={content.sections.projectHeaders[6]}
+              aria-label={`Open ${project.name}: ${project.linkLabel}`}
             >
               {project.linkLabel}
               <ExternalLink size={14} aria-hidden="true" />
@@ -500,13 +508,17 @@ function ContactSection({ content }: { content: PortfolioContent }) {
       </div>
 
       <div className="contact-actions">
-        <a href={content.profile.links.linkedin} target="_blank" rel="noreferrer">
+        <a href={content.profile.links.linkedin} target="_blank" rel="noopener noreferrer">
           <Linkedin size={18} aria-hidden="true" />
           LinkedIn
         </a>
-        <a href={content.profile.links.github} target="_blank" rel="noreferrer">
+        <a href={content.profile.links.github} target="_blank" rel="noopener noreferrer">
           <Github size={18} aria-hidden="true" />
           GitHub
+        </a>
+        <a href={content.profile.links.portfolioRepository} target="_blank" rel="noopener noreferrer">
+          <PanelsTopLeft size={18} aria-hidden="true" />
+          Source
         </a>
         <a href={content.profile.links.email}>
           <Mail size={18} aria-hidden="true" />

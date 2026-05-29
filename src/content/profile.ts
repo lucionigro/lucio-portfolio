@@ -66,6 +66,7 @@ export type PortfolioContent = {
     links: {
       linkedin: string;
       github: string;
+      portfolioRepository: string;
       email: string;
     };
   };
@@ -111,6 +112,7 @@ export type PortfolioContent = {
 const sharedLinks = {
   linkedin: "https://www.linkedin.com/in/lucionigro/",
   github: "https://github.com/lucionigro",
+  portfolioRepository: "https://github.com/lucionigro/lucio-portfolio",
   email: "mailto:lucionigrot@gmail.com",
 };
 
@@ -182,7 +184,7 @@ export const portfolioContent = {
         {
           href: "#contact",
           label: "Contact",
-          description: "Start a direct channel",
+          description: "Links, email, and source",
         },
       ],
     },
@@ -447,7 +449,7 @@ export const portfolioContent = {
         {
           href: "#contact",
           label: "Contacto",
-          description: "Iniciar canal directo",
+          description: "Links, email y codigo fuente",
         },
       ],
     },
